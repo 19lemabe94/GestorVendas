@@ -1,0 +1,49 @@
+# --- Ambiente Virtual ---
+# A pasta do ambiente virtual nunca deve ser versionada.
+# É a regra mais importante para projetos Python.
+venv/
+.venv/
+env/
+.env
+
+# --- Cache do Python e arquivos compilados ---
+# Pasta de cache gerada automaticamente pelo Python.
+__pycache__/
+# Arquivos de bytecode do Python.
+*.pyc
+*.pyo
+*.pyd
+
+# --- Arquivos de Dados da Aplicação ---
+# Estes arquivos são gerados durante o uso do programa e não devem
+# fazer parte do código-fonte. Cada instalação terá seus próprios dados.
+vendas.json
+produtos.json
+
+# Se você quiser incluir uma lista de produtos inicial, pode criar um
+# arquivo de exemplo e versioná-lo, como "produtos.json.example",
+# e deixar o "produtos.json" real ser ignorado.
+
+# --- Pastas de configuração de IDEs e editores ---
+# Evita conflitos de configuração pessoal entre desenvolvedores.
+.vscode/
+.idea/
+.project
+.pydevproject
+.settings/
+
+# --- Arquivos de Sistema Operacional ---
+# Arquivos de metadados do macOS e Windows.
+.DS_Store
+Thumbs.db
+
+# --- Arquivos de Log ---
+# Quaisquer arquivos de log gerados pela aplicação.
+*.log
+logs/
+
+# --- Arquivos de Build/Distribuição ---
+# Pastas geradas ao empacotar a aplicação (com PyInstaller, etc.)
+build/
+dist/
+*.egg-info/
