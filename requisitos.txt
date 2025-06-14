@@ -1,0 +1,60 @@
+Documento de Requisitos de Software (DRS)
+Projeto: Sistema de Gestão de Comandas de Vendas (GestorDeVendas)
+Versão: 1.0
+Data: 13 de junho de 2025
+
+1. Visão Geral do Projeto
+O projeto GestorDeVendas visa desenvolver uma aplicação de desktop para o gerenciamento de comandas de vendas em pequenos estabelecimentos comerciais, como cafés, lanchonetes ou bares. Atualmente, o controle manual ou baseado em planilhas é suscetível a erros, lento e não oferece insights sobre o desempenho das vendas.
+
+Este sistema irá automatizar o registro de produtos, o lançamento de vendas em comandas, o cálculo de totais e fornecerá análises básicas para apoiar a tomada de decisões. A solução proposta será uma aplicação independente, fácil de instalar e usar em um computador com sistema operacional Windows, macOS ou Linux.
+
+2. Escopo do Projeto
+2.1. Dentro do Escopo (O que o sistema fará):
+Gerenciamento completo do ciclo de vida dos produtos (Cadastrar, Listar, Editar, Remover).
+Criação e gerenciamento de comandas de vendas.
+Adição de múltiplos produtos e quantidades a uma comanda.
+Visualização de comandas abertas e fechadas.
+Fechamento de comandas com cálculo do valor total.
+Geração de relatórios e análises simples de vendas.
+2.2. Fora do Escopo (O que o sistema NÃO fará nesta versão):
+Controle de estoque (ex: baixa automática de insumos).
+Integração com sistemas de pagamento (máquinas de cartão, PIX).
+Controle de acesso com múltiplos usuários e permissões.
+Funcionalidades de rede (acesso multi-usuário simultâneo).
+Gestão de mesas ou clientes.
+Emissão de notas fiscais.
+3. Perfis de Usuário
+Haverá um único perfil de usuário com acesso a todas as funcionalidades:
+
+Operador / Gerente: Responsável por cadastrar produtos, lançar vendas, fechar comandas e visualizar os relatórios de desempenho.
+4. Requisitos Funcionais (RF)
+Os Requisitos Funcionais descrevem as funcionalidades específicas que o sistema deve executar.
+
+RF-01: Gestão de Produtos
+RF01.1: O sistema deve permitir que o usuário cadastre um novo produto, informando Nome e Preço.
+RF01.2: O sistema deve validar que o nome do produto seja único e que o preço seja um valor numérico positivo.
+RF01.3: O sistema deve exibir uma lista de todos os produtos cadastrados, mostrando seu nome e preço.
+RF01.4: O sistema deve permitir que o usuário edite as informações (nome e preço) de um produto existente.
+RF01.5: O sistema deve permitir que o usuário remova um produto do cadastro. O sistema não deve permitir a remoção se o produto estiver associado a uma comanda existente, para manter a integridade histórica.
+RF-02: Gestão de Comandas
+RF02.1: O sistema deve permitir a criação de uma nova comanda, que receberá um número de identificação (ID) único e será criada com o status "aberta".
+RF02.2: Em uma comanda aberta, o sistema deve permitir a adição de produtos (selecionados da lista de produtos cadastrados) e a especificação da quantidade.
+RF02.3: O sistema deve calcular e exibir o subtotal de cada item (quantidade x preço unitário) e o total atual da comanda em tempo real, à medida que os itens são adicionados.
+RF02.4: O sistema deve permitir a remoção de um item de uma comanda aberta.
+RF02.5: O sistema deve permitir o fechamento de uma comanda. Ao fechar, o status da comanda deve mudar para "fechada" e seu valor total final deve ser salvo permanentemente. Não será possível alterar uma comanda após o fechamento.
+RF02.6: O sistema deve exibir uma lista de todas as comandas, permitindo filtrar por status ("abertas" ou "fechadas"). A lista deve mostrar ID da comanda, data de criação, status e valor total.
+RF-03: Análise e Relatórios
+RF03.1: O sistema deve ser capaz de gerar um relatório com o total de vendas (soma dos valores de todas as comandas fechadas) dentro de um intervalo de datas selecionado pelo usuário.
+RF03.2: O sistema deve ser capaz de gerar um relatório (em formato de lista ou gráfico de barras) mostrando os 10 produtos mais vendidos (em quantidade) em um determinado período.
+5. Requisitos Não Funcionais (RNF)
+Os Requisitos Não Funcionais descrevem as qualidades do sistema e as restrições sob as quais ele deve operar.
+
+RNF01 (Usabilidade): A interface do usuário deve ser limpa, intuitiva e fácil de usar, exigindo mínimo treinamento. Todas as funcionalidades principais devem estar acessíveis a partir da tela principal.
+RNF02 (Desempenho): As operações de consulta ao banco de dados (listar produtos, listar comandas) devem ser concluídas em menos de 2 segundos para uma base de dados com até 10.000 registros de comandas.
+RNF03 (Confiabilidade): Os dados de vendas e produtos devem ser persistidos de forma segura em um banco de dados local (SQLite). O sistema deve garantir a integridade dos dados, prevenindo a perda de informações em caso de fechamento normal da aplicação.
+RNF04 (Plataforma): A aplicação deve ser desenvolvida utilizando Python e a biblioteca PyQt6, sendo compatível com os principais sistemas operacionais desktop (Windows 10/11, macOS, e distribuições Linux comuns).
+RNF05 (Instalação): O processo de instalação deve ser simples, preferencialmente através de um único pacote de instalação ou um guia claro de como executar a partir do código-fonte.
+Aprovação do Documento
+Este documento serve como um acordo entre a equipe de desenvolvimento e o solicitante sobre o que será construído. A próxima fase, o design da interface e o desenvolvimento do código, começará com base nestes requisitos aprovados.
+
+Com este documento em mãos, temos um guia claro e objetivo para o desenvolvimento. O próximo passo lógico seria criar alguns wireframes ou esboços simples das telas principais (Tela Principal, Tela de Nova Comanda, Tela de Produtos) antes de mergulhar no código PyQt.
