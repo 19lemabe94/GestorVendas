@@ -1,4 +1,3 @@
-
 import customtkinter as ctk
 from datetime import datetime
 import gerenciador_dados as gd
