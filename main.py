@@ -1,6 +1,8 @@
+
 import customtkinter as ctk
 from datetime import datetime
 import gerenciador_dados as gd
+from tela_produtos import TelaGerenciamentoProdutos 
 
 # --- Configurações Iniciais ---
 ctk.set_appearance_mode("dark")
@@ -31,7 +33,8 @@ class App(ctk.CTk):
 
         # Dropdown para selecionar produtos
         nomes_produtos = [p['nome'] for p in self.produtos] if self.produtos else ["Nenhum produto"]
-        self.produto_selecionado = ctk.StringVar(value=nomes_produtos[0])
+        valor_inicial_dropdown = nomes_produtos[0] if nomes_produtos else ""
+        self.produto_selecionado = ctk.StringVar(value=valor_inicial_dropdown)
         self.option_menu_produtos = ctk.CTkOptionMenu(self.frame_controles, variable=self.produto_selecionado, values=nomes_produtos)
         self.option_menu_produtos.pack(padx=10, pady=5)
 
@@ -44,8 +47,9 @@ class App(ctk.CTk):
         self.btn_adicionar = ctk.CTkButton(self.frame_controles, text="Adicionar à Comanda", command=self.adicionar_item)
         self.btn_adicionar.pack(padx=10, pady=20)
         
-        # --- Botão para gerenciar produtos (você criará essa tela) ---
-        self.btn_gerenciar_produtos = ctk.CTkButton(self.frame_controles, text="Gerenciar Produtos")
+        # --- Botão para gerenciar produtos ---
+        # CORREÇÃO: Adicionado o 'command' para chamar o método que abre a tela
+        self.btn_gerenciar_produtos = ctk.CTkButton(self.frame_controles, text="Gerenciar Produtos", command=self.abrir_tela_produtos)
         self.btn_gerenciar_produtos.pack(side="bottom", padx=10, pady=10)
 
 
@@ -66,14 +70,36 @@ class App(ctk.CTk):
         # --- Frame de Ações (Abaixo da Comanda) ---
         self.btn_finalizar = ctk.CTkButton(self, text="Finalizar Venda", height=40, command=self.finalizar_venda)
         self.btn_finalizar.grid(row=1, column=1, padx=10, pady=10, sticky="sew")
+    
+    
+    def abrir_tela_produtos(self):
+        # O 'self' passado como argumento permite que a janela filha
+        # se comunique de volta com a janela principal (App)
+        if hasattr(self, 'tela_produtos_aberta') and self.tela_produtos_aberta.winfo_exists():
+            self.tela_produtos_aberta.focus() # Se a janela já estiver aberta, foque nela
+            return
+        self.tela_produtos_aberta = TelaGerenciamentoProdutos(master=self)
+        self.tela_produtos_aberta.grab_set() # Impede a interação com a janela principal
 
+    def atualizar_dropdown_produtos(self):
+        self.produtos = gd.carregar_dados(gd.ARQUIVO_PRODUTOS)
+        nomes_produtos = [p['nome'] for p in self.produtos] if self.produtos else ["Nenhum produto"]
+        valor_padrao = nomes_produtos[0] if nomes_produtos else ""
+        
+        # Atualiza a variável e o widget
+        self.produto_selecionado.set(valor_padrao)
+        self.option_menu_produtos.configure(values=nomes_produtos)
+        print("Dropdown de produtos atualizado.")
 
     def adicionar_item(self):
         nome_produto = self.produto_selecionado.get()
+        if not nome_produto or nome_produto == "Nenhum produto":
+            print("Nenhum produto selecionado!")
+            return
+            
         try:
             quantidade = int(self.entry_qtd.get() or 1) # Pega 1 se o campo estiver vazio
         except ValueError:
-            # Aqui você pode mostrar uma mensagem de erro
             print("Quantidade inválida!")
             return
 
@@ -131,7 +157,6 @@ class App(ctk.CTk):
         self.comanda_atual = []
         self.total_atual = 0.0
         self.atualizar_display_comanda()
-        # Adicionar uma mensagem de sucesso para o usuário
         print("Venda finalizada e salva com sucesso!")
 
 

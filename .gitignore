@@ -1,13 +1,11 @@
 # --- Ambiente Virtual ---
-# A pasta do ambiente virtual nunca deve ser versionada.
-# É a regra mais importante para projetos Python.
 venv/
 .venv/
 env/
 .env
 
 # --- Cache do Python e arquivos compilados ---
-# Pasta de cache gerada automaticamente pelo Python.
+
 __pycache__/
 # Arquivos de bytecode do Python.
 *.pyc
@@ -15,8 +13,6 @@ __pycache__/
 *.pyd
 
 # --- Arquivos de Dados da Aplicação ---
-# Estes arquivos são gerados durante o uso do programa e não devem
-# fazer parte do código-fonte. Cada instalação terá seus próprios dados.
 vendas.json
 produtos.json
 
