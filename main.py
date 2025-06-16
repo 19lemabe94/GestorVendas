@@ -2,6 +2,7 @@ import customtkinter as ctk
 from datetime import datetime
 import gerenciador_dados as gd
 from tela_produtos import TelaGerenciamentoProdutos 
+from tela_relatorios import TelaRelatorios ### NOVO ### - Importa a nova tela de relatórios
 
 # --- Configurações Iniciais ---
 ctk.set_appearance_mode("dark")
@@ -46,11 +47,12 @@ class App(ctk.CTk):
         self.btn_adicionar = ctk.CTkButton(self.frame_controles, text="Adicionar à Comanda", command=self.adicionar_item)
         self.btn_adicionar.pack(padx=10, pady=20)
         
-        # --- Botão para gerenciar produtos ---
-        # CORREÇÃO: Adicionado o 'command' para chamar o método que abre a tela
+        ### NOVO ### - Botão para abrir a tela de relatórios
+        self.btn_relatorios = ctk.CTkButton(self.frame_controles, text="Relatórios de Vendas", command=self.abrir_tela_relatorios)
+        self.btn_relatorios.pack(padx=10, pady=5)
+
         self.btn_gerenciar_produtos = ctk.CTkButton(self.frame_controles, text="Gerenciar Produtos", command=self.abrir_tela_produtos)
         self.btn_gerenciar_produtos.pack(side="bottom", padx=10, pady=10)
-
 
         # --- Frame da Comanda (Direita) ---
         self.frame_comanda = ctk.CTkFrame(self)
@@ -61,7 +63,7 @@ class App(ctk.CTk):
         self.textbox_comanda = ctk.CTkTextbox(self.frame_comanda, font=("Consolas", 14))
         self.textbox_comanda.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
         self.textbox_comanda.insert("0.0", "--- COMANDA ---\n")
-        self.textbox_comanda.configure(state="disabled") # Para não ser editável pelo usuário
+        self.textbox_comanda.configure(state="disabled")
 
         self.label_total = ctk.CTkLabel(self.frame_comanda, text="Total: R$ 0.00", font=("Arial", 20, "bold"))
         self.label_total.grid(row=1, column=0, padx=10, pady=10, sticky="w")
@@ -70,22 +72,26 @@ class App(ctk.CTk):
         self.btn_finalizar = ctk.CTkButton(self, text="Finalizar Venda", height=40, command=self.finalizar_venda)
         self.btn_finalizar.grid(row=1, column=1, padx=10, pady=10, sticky="sew")
     
-    
     def abrir_tela_produtos(self):
-        # O 'self' passado como argumento permite que a janela filha
-        # se comunique de volta com a janela principal (App)
         if hasattr(self, 'tela_produtos_aberta') and self.tela_produtos_aberta.winfo_exists():
-            self.tela_produtos_aberta.focus() # Se a janela já estiver aberta, foque nela
+            self.tela_produtos_aberta.focus()
             return
         self.tela_produtos_aberta = TelaGerenciamentoProdutos(master=self)
-        self.tela_produtos_aberta.grab_set() # Impede a interação com a janela principal
+        self.tela_produtos_aberta.grab_set()
+
+    ### NOVO ### - Método para abrir a tela de relatórios
+    def abrir_tela_relatorios(self):
+        if hasattr(self, 'tela_relatorios_aberta') and self.tela_relatorios_aberta.winfo_exists():
+            self.tela_relatorios_aberta.focus()
+            return
+        self.tela_relatorios_aberta = TelaRelatorios(master=self)
+        self.tela_relatorios_aberta.grab_set()
 
     def atualizar_dropdown_produtos(self):
         self.produtos = gd.carregar_dados(gd.ARQUIVO_PRODUTOS)
         nomes_produtos = [p['nome'] for p in self.produtos] if self.produtos else ["Nenhum produto"]
         valor_padrao = nomes_produtos[0] if nomes_produtos else ""
         
-        # Atualiza a variável e o widget
         self.produto_selecionado.set(valor_padrao)
         self.option_menu_produtos.configure(values=nomes_produtos)
         print("Dropdown de produtos atualizado.")
@@ -97,7 +103,7 @@ class App(ctk.CTk):
             return
             
         try:
-            quantidade = int(self.entry_qtd.get() or 1) # Pega 1 se o campo estiver vazio
+            quantidade = int(self.entry_qtd.get() or 1)
         except ValueError:
             print("Quantidade inválida!")
             return
@@ -105,11 +111,13 @@ class App(ctk.CTk):
         produto_encontrado = next((p for p in self.produtos if p['nome'] == nome_produto), None)
 
         if produto_encontrado:
+            ### ALTERADO ### - Adiciona a categoria ao item da venda para salvar no histórico
             item = {
                 "id_produto": produto_encontrado['id'],
                 "nome": produto_encontrado['nome'],
                 "quantidade": quantidade,
-                "preco_unitario": produto_encontrado['preco']
+                "preco_unitario": produto_encontrado['preco'],
+                "categoria": produto_encontrado.get('categoria', 'Sem Categoria')
             }
             self.comanda_atual.append(item)
             self.atualizar_display_comanda()
@@ -152,7 +160,6 @@ class App(ctk.CTk):
         vendas.append(nova_venda)
         gd.salvar_dados(gd.ARQUIVO_VENDAS, vendas)
         
-        # Limpar para a próxima venda
         self.comanda_atual = []
         self.total_atual = 0.0
         self.atualizar_display_comanda()
