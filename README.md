@@ -1,13 +1,3 @@
-Com certeza! Fico feliz em personalizar o `README.md` com suas informações. Ter os links corretos dá o crédito devido e profissionaliza ainda mais o projeto.
-
-Aqui está o `README.md` completamente atualizado com os links do seu repositório, seu nome e seus perfis do GitHub e LinkedIn.
-
----
-
-### **README.md Atualizado e Personalizado**
-
-Copie e cole este conteúdo diretamente no seu arquivo `README.md`.
-
 ````markdown
 # Sistema de Comanda Eletrônica
 
