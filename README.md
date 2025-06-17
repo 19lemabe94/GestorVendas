@@ -6,11 +6,9 @@ Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma inte
 
 ## Screenshots
 
-*(Dica: Tire screenshots do seu programa em execução e adicione-os à pasta do seu projeto. Depois, você pode atualizar os links abaixo para que eles apareçam aqui!)*
-
 | Tela Principal | Gerenciamento de Produtos |
 | :---: | :---: |
-| ![Tela Principal](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/tela_principal.png "Tela Principal da Comanda") | ![Tela de Gerenciamento](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/gerenciamento_produtos.png "Tela de Gerenciamento de Produtos") |
+| ![Tela Principal](https://raw.githubusercontent.com/19lemabe94/GestorVendas/prints/tela1.png "Tela Principal da Comanda") | ![Tela de Gerenciamento](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/gerenciamento_produtos.png "Tela de Gerenciamento de Produtos") |
 
 | Relatórios Avançados | Histórico de Vendas |
 | :---: | :---: |
