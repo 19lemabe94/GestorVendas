@@ -1,3 +1,4 @@
+# tela_produtos.py (VERSÃO COM FUNÇÃO DE EDITAR)
 import customtkinter as ctk
 from tkinter import messagebox
 import gerenciador_dados as gd
@@ -5,7 +6,8 @@ import time
 
 class DialogoProduto(ctk.CTkToplevel):
     """
-    Diálogo personalizado para adicionar ou editar produtos.
+    Diálogo personalizado para adicionar OU EDITAR produtos.
+    Nenhuma alteração necessária nesta classe, ela já está pronta para editar!
     """
     def __init__(self, master, produto_existente=None):
         super().__init__(master)
@@ -16,12 +18,11 @@ class DialogoProduto(ctk.CTkToplevel):
         self.title("Adicionar Produto" if not produto_existente else "Editar Produto")
         self.geometry("350x250")
         self.resizable(False, False)
-        self.transient(master) # Mantém o diálogo na frente da janela principal
+        self.transient(master)
         self.grab_set()
 
-        # Obter categorias existentes para o ComboBox
         produtos = gd.carregar_dados(gd.ARQUIVO_PRODUTOS)
-        categorias = sorted(list(set(p['categoria'] for p in produtos if 'categoria' in p)))
+        categorias = sorted(list(set(p.get('categoria', 'N/A') for p in produtos)))
 
         ctk.CTkLabel(self, text="Nome:").pack(padx=20, pady=(10, 0))
         self.entry_nome = ctk.CTkEntry(self, width=300)
@@ -35,7 +36,6 @@ class DialogoProduto(ctk.CTkToplevel):
         self.combo_categoria = ctk.CTkComboBox(self, width=300, values=categorias)
         self.combo_categoria.pack(padx=20)
 
-        # Preencher campos se estiver editando
         if produto_existente:
             self.entry_nome.insert(0, produto_existente.get('nome', ''))
             self.entry_preco.insert(0, str(produto_existente.get('preco', '')))
@@ -79,10 +79,9 @@ class TelaGerenciamentoProdutos(ctk.CTkToplevel):
         super().__init__(master)
         self.master = master
         self.title("Gerenciamento de Produtos")
-        self.geometry("700x500") # Aumentado para nova coluna
+        self.geometry("700x500")
         self.resizable(False, False)
 
-        # ... (código do __init__ continua igual até a criação dos botões) ...
         self.produtos = gd.carregar_dados(gd.ARQUIVO_PRODUTOS)
         self.produto_selecionado_id = ctk.StringVar()
 
@@ -91,7 +90,7 @@ class TelaGerenciamentoProdutos(ctk.CTkToplevel):
 
         self.frame_tabela = ctk.CTkScrollableFrame(self.frame_principal, label_text="Produtos Cadastrados")
         self.frame_tabela.pack(expand=True, fill="both", padx=5, pady=5)
-        self.frame_tabela.grid_columnconfigure(1, weight=1)
+        self.frame_tabela.grid_columnconfigure(0, weight=1) # Coluna do nome do produto expande
 
         self.frame_botoes = ctk.CTkFrame(self.frame_principal)
         self.frame_botoes.pack(fill="x", padx=5, pady=5)
@@ -99,9 +98,9 @@ class TelaGerenciamentoProdutos(ctk.CTkToplevel):
         self.btn_adicionar = ctk.CTkButton(self.frame_botoes, text="Adicionar Produto", command=self.adicionar_produto)
         self.btn_adicionar.pack(side="left", padx=10, pady=10)
         
-        # Opcional: Adicionar botão de Editar
-        # self.btn_editar = ctk.CTkButton(self.frame_botoes, text="Editar Selecionado", command=self.editar_produto)
-        # self.btn_editar.pack(side="left", padx=10, pady=10)
+        ### NOVO ### - Botão para editar um produto
+        self.btn_editar = ctk.CTkButton(self.frame_botoes, text="Editar Selecionado", command=self.editar_produto)
+        self.btn_editar.pack(side="left", padx=10, pady=10)
 
         self.btn_excluir = ctk.CTkButton(self.frame_botoes, text="Excluir Selecionado", command=self.excluir_produto, fg_color="red", hover_color="#9B0000")
         self.btn_excluir.pack(side="right", padx=10, pady=10)
@@ -110,42 +109,64 @@ class TelaGerenciamentoProdutos(ctk.CTkToplevel):
         self.atualizar_tabela()
 
     def atualizar_tabela(self):
+        # ... (método sem alterações) ...
         for widget in self.frame_tabela.winfo_children():
             widget.destroy()
 
-        # Adiciona nova coluna para Categoria
         ctk.CTkLabel(self.frame_tabela, text="Nome do Produto", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, padx=10, pady=5, sticky="w")
         ctk.CTkLabel(self.frame_tabela, text="Preço", font=ctk.CTkFont(weight="bold")).grid(row=0, column=1, padx=10, pady=5)
         ctk.CTkLabel(self.frame_tabela, text="Categoria", font=ctk.CTkFont(weight="bold")).grid(row=0, column=2, padx=10, pady=5)
-        ctk.CTkLabel(self.frame_tabela, text="Sel.", font=ctk.CTkFont(weight="bold")).grid(row=0, column=3, padx=5, pady=5)
+        ctk.CTkLabel(self.frame_tabela, text="Sel.", font=ctk.CTkFont(weight="bold")).grid(row=0, column=3, padx=5, pady=5, sticky="e")
 
         self.produtos = gd.carregar_dados(gd.ARQUIVO_PRODUTOS)
         for i, produto in enumerate(self.produtos, start=1):
             ctk.CTkLabel(self.frame_tabela, text=produto['nome']).grid(row=i, column=0, padx=10, sticky="w")
             ctk.CTkLabel(self.frame_tabela, text=f"R$ {produto['preco']:.2f}").grid(row=i, column=1, padx=10)
             ctk.CTkLabel(self.frame_tabela, text=produto.get('categoria', 'N/A')).grid(row=i, column=2, padx=10)
-            
             radio_btn = ctk.CTkRadioButton(self.frame_tabela, text="", variable=self.produto_selecionado_id, value=str(produto['id']))
             radio_btn.grid(row=i, column=3, padx=5, sticky="e")
 
     def adicionar_produto(self):
+        # ... (método sem alterações) ...
         dialog = DialogoProduto(self)
         novo_produto = dialog.get_produto()
-        
         if novo_produto:
             self.produtos.append(novo_produto)
             gd.salvar_dados(gd.ARQUIVO_PRODUTOS, self.produtos)
             self.atualizar_tabela()
 
-    def excluir_produto(self):
-        # ... (método excluir_produto continua igual) ...
+    def editar_produto(self):
         id_selecionado = self.produto_selecionado_id.get()
         if not id_selecionado:
-            messagebox.showwarning("Aviso", "Por favor, selecione um produto para excluir.")
+            messagebox.showwarning("Nenhum Produto Selecionado", "Por favor, selecione um produto da lista para editar.", parent=self)
             return
 
-        confirmar = messagebox.askyesno("Confirmar Exclusão", f"Tem certeza que deseja excluir o produto com ID {id_selecionado}?")
-        
+        # Encontrar o dicionário completo do produto selecionado
+        produto_para_editar = next((p for p in self.produtos if str(p['id']) == id_selecionado), None)
+        if not produto_para_editar:
+            messagebox.showerror("Erro", "Produto não encontrado.", parent=self)
+            return
+            
+        # Reutiliza a classe DialogoProduto, passando o produto existente
+        dialog = DialogoProduto(self, produto_existente=produto_para_editar)
+        produto_atualizado = dialog.get_produto()
+
+        if produto_atualizado:
+            # Encontra o índice do produto antigo e o substitui pelo atualizado
+            for i, p in enumerate(self.produtos):
+                if str(p['id']) == id_selecionado:
+                    self.produtos[i] = produto_atualizado
+                    break
+            
+            gd.salvar_dados(gd.ARQUIVO_PRODUTOS, self.produtos)
+            self.atualizar_tabela()
+
+    def excluir_produto(self):
+        id_selecionado = self.produto_selecionado_id.get()
+        if not id_selecionado:
+            messagebox.showwarning("Aviso", "Por favor, selecione um produto para excluir.", parent=self)
+            return
+        confirmar = messagebox.askyesno("Confirmar Exclusão", f"Tem certeza que deseja excluir o produto com ID {id_selecionado}?", parent=self)
         if confirmar:
             self.produtos = [p for p in self.produtos if str(p['id']) != id_selecionado]
             gd.salvar_dados(gd.ARQUIVO_PRODUTOS, self.produtos)

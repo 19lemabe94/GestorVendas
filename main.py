@@ -91,7 +91,6 @@ class App(ctk.CTk):
         self.tela_historico_aberta = TelaHistoricoVendas(master=self)
         self.tela_historico_aberta.grab_set()
 
-    ### NOVO ### - Método para limpar os dados da comanda atual
     def limpar_comanda(self):
         """Reseta a comanda atual para um estado vazio."""
         self.comanda_atual = []
