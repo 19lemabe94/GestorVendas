@@ -1,4 +1,3 @@
-````markdown
 # Sistema de Comanda Eletrônica
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
@@ -114,4 +113,3 @@ O projeto pode ser expandido com as seguintes funcionalidades:
 **Leonardo Bezerra**
 
 [GITHUB](https://github.com/19lemabe94) | [LinkedIn](https://www.linkedin.com/in/leonardo-bezerra-98b05a307/)
-````
