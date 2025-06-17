@@ -1,20 +1,32 @@
+Com certeza! Fico feliz em personalizar o `README.md` com suas informações. Ter os links corretos dá o crédito devido e profissionaliza ainda mais o projeto.
+
+Aqui está o `README.md` completamente atualizado com os links do seu repositório, seu nome e seus perfis do GitHub e LinkedIn.
+
+---
+
+### **README.md Atualizado e Personalizado**
+
+Copie e cole este conteúdo diretamente no seu arquivo `README.md`.
+
+````markdown
 # Sistema de Comanda Eletrônica
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
-Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma interface gráfica moderna e intuitiva inspirada em comandas de restaurante. O projeto agora conta com gerenciamento de produtos por categoria, relatórios avançados com filtros dinâmicos e gerenciamento do histórico de vendas.
+Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma interface gráfica moderna e intuitiva inspirada em comandas de restaurante. O projeto conta com gerenciamento de produtos por categoria, relatórios avançados com filtros dinâmicos e gerenciamento do histórico de vendas.
 
 ## Screenshots
 
-*(Dica: Tire screenshots do seu programa em execução e substitua os links abaixo para mostrar todo o potencial do seu sistema!)*
+*(Dica: Tire screenshots do seu programa em execução e adicione-os à pasta do seu projeto. Depois, você pode atualizar os links abaixo para que eles apareçam aqui!)*
 
 | Tela Principal | Gerenciamento de Produtos |
 | :---: | :---: |
-| ![Tela Principal](https://i.imgur.com/your_main_screen_image_link.png "Tela Principal da Comanda") | ![Tela de Gerenciamento](https://i.imgur.com/your_products_screen_image_link.png "Tela de Gerenciamento de Produtos") |
+| ![Tela Principal](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/tela_principal.png "Tela Principal da Comanda") | ![Tela de Gerenciamento](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/gerenciamento_produtos.png "Tela de Gerenciamento de Produtos") |
 
 | Relatórios Avançados | Histórico de Vendas |
 | :---: | :---: |
-| ![Tela de Relatórios](https://i.imgur.com/your_reports_screen_image_link.png "Tela de Relatórios com Filtros") | ![Tela de Histórico](https://i.imgur.com/your_history_screen_image_link.png "Tela de Histórico de Vendas") |
+| ![Tela de Relatórios](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/relatorios.png "Tela de Relatórios com Filtros") | ![Tela de Histórico](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/screenshots/historico_vendas.png "Tela de Histórico de Vendas") |
+
 
 ## Funcionalidades Principais
 
@@ -25,7 +37,7 @@ Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma inte
     -   Filtrar vendas por uma ou mais **categorias**.
     -   Visualizar o faturamento **hora a hora** para identificar horários de pico.
 -   :wastebasket: **Gerenciamento de Histórico:** Visualize todas as vendas já realizadas em uma lista e exclua registros específicos de forma segura, com confirmação.
--   :floppy_disk: **Persistência de Dados:** Todos os produtos e vendas finalizadas são salvos em arquivos JSON, permitindo que os dados persistam entre as execuções.
+-   :floppy_disk: **Persistência de Dados:** Todos os produtos e vendas finalizadas são salvos em arquivos JSON, permitindo que os dados persistam entre as execuções do programa.
 -   :art: **Interface Gráfica Moderna:** Construído com a biblioteca CustomTkinter, oferecendo um visual agradável e responsivo em tema claro ou escuro.
 
 ## Tecnologias Utilizadas
@@ -41,8 +53,8 @@ Siga os passos abaixo para executar o projeto em sua máquina local.
 
 **1. Clone o Repositório**
 ```bash
-git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-cd seu-repositorio
+git clone [https://github.com/19lemabe94/GestorVendas.git](https://github.com/19lemabe94/GestorVendas.git)
+cd GestorVendas
 ```
 
 **2. Crie e Ative o Ambiente Virtual**
@@ -107,7 +119,9 @@ O projeto pode ser expandido com as seguintes funcionalidades:
 -   [ ] Desenvolver um sistema de autenticação de usuários (login/senha).
 -   [ ] Criar um executável (`.exe` ou similar) com PyInstaller para facilitar a distribuição.
 
-## ✨ Autor
-Leonardo Bezerra:
+## Autor
+
+**Leonardo Bezerra**
 
 [GITHUB](https://github.com/19lemabe94) | [LinkedIn](https://www.linkedin.com/in/leonardo-bezerra-98b05a307/)
+````
