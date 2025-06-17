@@ -1,3 +1,4 @@
+# tela_relatorios.py (VERSÃO COM DETALHAMENTO DE PAGAMENTO NO RESUMO DO DIA)
 import customtkinter as ctk
 from collections import defaultdict
 from tkcalendar import DateEntry
@@ -8,7 +9,7 @@ class TelaRelatorios(ctk.CTkToplevel):
     def __init__(self, master=None):
         super().__init__(master)
         self.title("Relatório de Vendas Avançado")
-        self.geometry("950x700") # Aumentado para o novo quadro
+        self.geometry("950x700")
         self.transient(master)
         self.grab_set()
 
@@ -28,7 +29,7 @@ class TelaRelatorios(ctk.CTkToplevel):
 
         self._configurar_datas_padrao()
         self._aplicar_filtros()
-        self._calcular_e_atualizar_resumo_hoje() # <-- NOVO: Chamada para o resumo do dia
+        self._calcular_e_atualizar_resumo_hoje()
 
     def _criar_widgets_de_filtro(self):
         # Frame para os filtros de data e botões
@@ -61,38 +62,63 @@ class TelaRelatorios(ctk.CTkToplevel):
             cb.pack(anchor="w", padx=5)
             self.vars_categorias[categoria] = var
 
-        ### NOVO: QUADRO PARA O RESUMO DO DIA ###
+        ### ALTERADO: QUADRO DE RESUMO DO DIA ###
         frame_resumo_hoje = ctk.CTkFrame(self.frame_filtros, border_width=1)
         frame_resumo_hoje.grid(row=0, column=2, padx=10, pady=5, sticky="ns")
         
         ctk.CTkLabel(frame_resumo_hoje, text="Vendas de Hoje", font=ctk.CTkFont(size=14, weight="bold")).pack(pady=(5,10), padx=20)
-        self.label_hoje_faturamento = ctk.CTkLabel(frame_resumo_hoje, text="Faturamento: R$ 0.00", font=ctk.CTkFont(size=12))
+        
+        self.label_hoje_faturamento = ctk.CTkLabel(frame_resumo_hoje, text="Faturamento Total: R$ 0.00", font=ctk.CTkFont(size=12, weight="bold"))
         self.label_hoje_faturamento.pack(anchor="w", padx=20)
+        
+        # Novos labels para detalhamento
+        self.label_hoje_dinheiro = ctk.CTkLabel(frame_resumo_hoje, text="↳ Dinheiro: R$ 0.00", font=ctk.CTkFont(size=12))
+        self.label_hoje_dinheiro.pack(anchor="w", padx=30)
+        
+        self.label_hoje_cartao = ctk.CTkLabel(frame_resumo_hoje, text="↳ Cartão: R$ 0.00", font=ctk.CTkFont(size=12))
+        self.label_hoje_cartao.pack(anchor="w", padx=30)
+        
         self.label_hoje_vendas = ctk.CTkLabel(frame_resumo_hoje, text="Nº de Vendas: 0", font=ctk.CTkFont(size=12))
-        self.label_hoje_vendas.pack(anchor="w", padx=20, pady=(0, 10))
+        self.label_hoje_vendas.pack(anchor="w", padx=20, pady=(10, 10))
 
-        # Faz o quadro de resumo expandir se houver espaço
         self.frame_filtros.grid_columnconfigure(2, weight=1)
 
-    ### NOVO: MÉTODO PARA O RESUMO DO DIA ###
+    ### ALTERADO: MÉTODO PARA O RESUMO DO DIA ###
     def _calcular_e_atualizar_resumo_hoje(self):
         hoje = date.today()
         faturamento_hoje = 0.0
         num_vendas_hoje = 0
+        total_dinheiro = 0.0 # Nova variável
+        total_cartao = 0.0   # Nova variável
 
         for venda in self.todas_as_vendas:
             try:
                 data_venda = datetime.fromisoformat(venda['data_hora']).date()
                 if data_venda == hoje:
-                    faturamento_hoje += venda.get('total_venda', 0)
+                    total_da_venda = venda.get('total_venda', 0)
+                    metodo_pag = venda.get('metodo_pagamento', 'N/D')
+
+                    # Soma para o total geral
+                    faturamento_hoje += total_da_venda
                     num_vendas_hoje += 1
+
+                    # Separa a soma por método de pagamento
+                    if metodo_pag == 'Dinheiro':
+                        total_dinheiro += total_da_venda
+                    elif metodo_pag == 'Cartão':
+                        total_cartao += total_da_venda
+
             except (ValueError, TypeError):
                 continue
         
-        self.label_hoje_faturamento.configure(text=f"Faturamento: R$ {faturamento_hoje:.2f}")
+        # Atualiza todos os labels com os novos valores
+        self.label_hoje_faturamento.configure(text=f"Faturamento Total: R$ {faturamento_hoje:.2f}")
+        self.label_hoje_dinheiro.configure(text=f"↳ Dinheiro: R$ {total_dinheiro:.2f}")
+        self.label_hoje_cartao.configure(text=f"↳ Cartão: R$ {total_cartao:.2f}")
         self.label_hoje_vendas.configure(text=f"Nº de Vendas: {num_vendas_hoje}")
 
-    # ... O resto dos métodos continua igual ...
+
+    # ... O resto do arquivo não precisa de alterações ...
     def _configurar_datas_padrao(self):
         if not self.todas_as_vendas: return
         datas_vendas = [datetime.fromisoformat(venda['data_hora']).date() for venda in self.todas_as_vendas if 'data_hora' in venda]
