@@ -1,8 +1,27 @@
-# Sistema de Comanda Eletrônica
+# Sistema de Comanda Eletrônica (Gestor de Vendas)
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Status](https://img.shields.io/badge/status-Pronto%20para%20Uso-brightgreen)
 
-Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma interface gráfica moderna e intuitiva inspirada em comandas de restaurante. O projeto conta com gerenciamento de produtos por categoria, relatórios avançados com filtros dinâmicos e gerenciamento do histórico de vendas.
+Um sistema de Ponto de Venda (PDV) completo e funcional, desenvolvido em Python com a biblioteca CustomTkinter. Inspirado em comandas de restaurante, este projeto oferece uma solução robusta para gerenciamento de produtos, registro de vendas e análise de dados, empacotado em um executável para fácil distribuição.
+
+## Como Usar (Para Usuários Finais)
+
+Você pode usar o programa sem precisar instalar Python ou qualquer dependência.
+
+1.  Acesse a página de **[Releases](https://github.com/19lemabe94/GestorVendas/releases)** do projeto.
+2.  Na versão mais recente, baixe o arquivo `.zip` (ex: `GestorVendas_v1.0.0.zip`).
+3.  Extraia o conteúdo do arquivo `.zip` em uma pasta no seu computador.
+4.  Execute o arquivo `main.exe`. Pronto!
+
+---
+> ### :warning: AVISO IMPORTANTE SOBRE ANTIVÍRUS (FALSO POSITIVO)
+>
+> **O programa é 100% seguro.** No entanto, alguns antivírus (especialmente o Windows Defender) podem identificar o arquivo `.exe` como uma ameaça (`Trojan:Win32/Bearfoos.B!ml` ou similar).
+>
+> **Por que isso acontece?** O PyInstaller, ferramenta usada para criar o `.exe`, empacota o código de uma forma que, para o antivírus, se parece com o comportamento de alguns malwares (um arquivo que se auto-extrai para rodar). Trata-se de um **falso positivo** muito comum para aplicações feitas por desenvolvedores independentes.
+>
+> **Como resolver:** Se o Windows bloquear o arquivo, vá em "Segurança do Windows" > "Proteção contra vírus e ameaças" > "Histórico de proteção". Encontre o item bloqueado, clique em "Ações" e selecione "Restaurar" ou "Permitir".
+---
 
 ## Screenshots
 
@@ -14,29 +33,21 @@ Um sistema de Ponto de Venda (PDV) completo, desenvolvido em Python com uma inte
 | :---: | :---: |
 | ![Tela de Relatórios](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/prints/tela3.png "Tela de Relatórios com Filtros") | ![Tela de Histórico](https://raw.githubusercontent.com/19lemabe94/GestorVendas/main/prints/tela4.png "Tela de Histórico de Vendas") |
 
-
 ## Funcionalidades Principais
 
--   :heavy_plus_sign: **Gerenciamento de Produtos:** Adicione, edite, exclua e categorize produtos (Lanches, Bebidas, etc.) em uma interface com busca e filtro.
--   :scroll: **Registro de Vendas Flexível:** Crie "comandas" adicionando múltiplos produtos e cancele/limpe o pedido a qualquer momento com um único botão.
--   :chart_with_upwards_trend: **Relatórios Avançados:** Analise o desempenho das vendas com uma tela de relatórios que permite:
-    -   Filtrar vendas por **período de datas**.
-    -   Filtrar vendas por uma ou mais **categorias**.
-    -   Visualizar o faturamento **hora a hora** para identificar horários de pico.
--   :wastebasket: **Gerenciamento de Histórico:** Visualize todas as vendas já realizadas em uma lista e exclua registros específicos de forma segura, com confirmação.
--   :floppy_disk: **Persistência de Dados:** Todos os produtos e vendas finalizadas são salvos em arquivos JSON.
--   :art: **Interface Gráfica Moderna:** Construído com a biblioteca CustomTkinter.
+-   :heavy_plus_sign: **Gerenciamento de Produtos:** CRUD completo (Adicionar, Editar, Excluir) com categorização, busca por nome e filtro por categoria.
+-   :scroll: **Registro de Vendas Flexível:** Crie comandas, adicione itens e limpe o pedido a qualquer momento.
+-   :credit_card: **Seleção de Pagamento:** Finalização de venda com seleção obrigatória de método (Dinheiro ou Cartão).
+-   :chart_with_upwards_trend: **Relatórios Avançados:** Painel de análise com:
+    -   Filtros dinâmicos por período de datas e categorias.
+    -   Análise de faturamento hora a hora.
+    -   Resumo rápido das vendas do dia, detalhado por método de pagamento.
+-   :wastebasket: **Gerenciamento de Histórico:** Visualize e exclua vendas passadas de forma segura.
+-   :floppy_disk: **Persistência de Dados:** Todos os dados são salvos localmente em arquivos JSON.
 
-## Tecnologias Utilizadas
+## Para Desenvolvedores: Rodando a Partir do Código-Fonte
 
--   **Python 3**
--   **CustomTkinter** - Para a criação da interface gráfica.
--   **tkcalendar** - Para os widgets de seleção de data nos filtros.
--   **JSON** - Para armazenamento leve e legível dos dados.
-
-## Instalação e Execução
-
-Siga os passos abaixo para executar o projeto em sua máquina local.
+Se você deseja executar o projeto a partir do código ou contribuir, siga os passos abaixo.
 
 **1. Clone o Repositório**
 ```bash
@@ -45,18 +56,11 @@ cd GestorVendas
 ```
 
 **2. Crie e Ative o Ambiente Virtual**
-
--   **Windows (PowerShell):**
-    ```powershell
-    python -m venv venv
-    .\venv\Scripts\Activate.ps1
-    ```
-
--   **Linux / macOS:**
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
+```powershell
+# Windows (PowerShell)
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
 
 **3. Instale as Dependências**
 ```bash
@@ -68,26 +72,22 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## Estrutura do Projeto
+### Gerando o Executável (.exe)
+
+Para empacotar a aplicação, certifique-se de que o `pyinstaller` está instalado (`pip install pyinstaller`) e execute o comando abaixo no terminal, a partir da raiz do projeto:
+
+```bash
+pyinstaller --noconsole --onefile --windowed --add-data="produtos.json;." --add-data="vendas.json;." --add-data="venv\Lib\site-packages\customtkinter;customtkinter" --add-data="venv\Lib\site-packages\tkcalendar;tkcalendar" main.py
 ```
-/GestorVendas/
-|-- prints/                 # Pasta com as imagens do projeto
-|   |-- tela1.png
-|   |-- tela2.png
-|   |-- tela3.png
-|   |-- tela4.png
-|-- .gitignore
-|-- gerenciador_dados.py
-|-- main.py
-|-- tela_historico_vendas.py
-|-- tela_produtos.py
-|-- tela_relatorios.py
-|-- produtos.json
-|-- vendas.json
-|-- requirements.txt
-|-- README.md
-|-- venv/
-```
+O executável final estará na pasta `dist/`.
+
+## Tecnologias Utilizadas
+
+-   **Python 3**
+-   **CustomTkinter**
+-   **tkcalendar**
+-   **JSON**
+-   **PyInstaller** (para a distribuição)
 
 ## Próximos Passos e Melhorias
 
@@ -95,7 +95,6 @@ python main.py
 -   [ ] Implementar "soft delete" (marcar uma venda como "cancelada" em vez de excluir).
 -   [ ] Criar um sistema de **backup e restauração** dos arquivos JSON.
 -   [ ] Desenvolver um sistema de autenticação de usuários (login/senha).
--   [ ] Criar um executável (`.exe`) com PyInstaller para facilitar a distribuição.
 
 ## Autor
 
